@@ -1,0 +1,198 @@
+[
+  {
+    "id": 1,
+    "project": 42,
+    "data": {
+      "audio": "/data/upload/42/task_01_khmer_english_conversation.wav",
+      "duration_seconds": 60,
+      "collector_id": "member_a",
+      "speaker_id": "spk_01",
+      "topic": "Campus Directions"
+    },
+    "annotations": [],
+    "created_at": "2026-10-14T08:00:00.000Z",
+    "updated_at": "2026-10-14T08:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "project": 42,
+    "data": {
+      "audio": "/data/upload/42/task_02_khmer_english_food.wav",
+      "duration_seconds": 90,
+      "collector_id": "member_a",
+      "speaker_id": "spk_02",
+      "topic": "Lunch Order"
+    },
+    "annotations": [
+      {
+        "id": 201,
+        "completed_by": 101,
+        "was_cancelled": false,
+        "created_at": "2026-10-14T09:15:00.000Z",
+        "updated_at": "2026-10-14T09:30:00.000Z",
+        "lead_time": 45.2,
+        "result": [
+          {
+            "from_name": "transcript",
+            "to_name": "audio",
+            "type": "textarea",
+            "value": {
+              "text": [
+                "តោះទៅញ៉ាំ lunch នៅឯណាថ្ងៃនេះ? I want to eat something fast."
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-14T08:05:00.000Z",
+    "updated_at": "2026-10-14T09:30:00.000Z"
+  },
+  {
+    "id": 3,
+    "project": 42,
+    "data": {
+      "audio": "/data/upload/42/task_03_noisy_audio.wav",
+      "duration_seconds": 45,
+      "collector_id": "member_b",
+      "speaker_id": "spk_03",
+      "topic": "Study Group Discussion"
+    },
+    "annotations": [
+      {
+        "id": 301,
+        "completed_by": 102,
+        "was_cancelled": true,
+        "created_at": "2026-10-14T10:00:00.000Z",
+        "updated_at": "2026-10-14T10:05:00.000Z",
+        "lead_time": 12.0,
+        "result": []
+      }
+    ],
+    "created_at": "2026-10-14T08:10:00.000Z",
+    "updated_at": "2026-10-14T10:05:00.000Z"
+  },
+  {
+    "id": 4,
+    "project": 42,
+    "data": {
+      "audio": "/data/upload/42/task_04_lecture_qa.wav",
+      "duration_seconds": 120,
+      "collector_id": "member_b",
+      "speaker_id": "spk_04",
+      "topic": "Class Presentation"
+    },
+    "annotations": [
+      {
+        "id": 401,
+        "completed_by": 101,
+        "was_cancelled": false,
+        "created_at": "2026-10-14T11:00:00.000Z",
+        "updated_at": "2026-10-14T11:20:00.000Z",
+        "lead_time": 60.5,
+        "result": [
+          {
+            "from_name": "transcript",
+            "to_name": "audio",
+            "type": "textarea",
+            "value": {
+              "text": [
+                "Draft initial transcript - to be reviewed."
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": 402,
+        "completed_by": 102,
+        "was_cancelled": false,
+        "created_at": "2026-10-14T11:30:00.000Z",
+        "updated_at": "2026-10-14T11:45:00.000Z",
+        "lead_time": 55.0,
+        "result": [
+          {
+            "from_name": "transcript",
+            "to_name": "audio",
+            "type": "textarea",
+            "value": {
+              "text": [
+                "Project ហ្នឹង deadline ថ្ងៃអាទិត្យ ត្រូវ prepare slides ឲ្យហើយមុន meeting."
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-14T08:15:00.000Z",
+    "updated_at": "2026-10-14T11:45:00.000Z"
+  },
+  {
+    "id": 5,
+    "project": 42,
+    "data": {
+      "audio": "/data/upload/42/task_05_interview_clip.wav",
+      "speaker_id": "spk_05",
+      "topic": "Career Interview"
+    },
+    "annotations": [
+      {
+        "id": 501,
+        "completed_by": 103,
+        "was_cancelled": false,
+        "created_at": "2026-10-14T13:00:00.000Z",
+        "updated_at": "2026-10-14T13:10:00.000Z",
+        "lead_time": 30.0,
+        "result": [
+          {
+            "from_name": "transcript",
+            "to_name": "audio",
+            "type": "textarea",
+            "value": {
+              "text": [
+                "ខ្ញុំគិតថា software engineering is a great field to pursue."
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-14T08:20:00.000Z",
+    "updated_at": "2026-10-14T13:10:00.000Z"
+  },
+  {
+    "id": 4,
+    "project": 42,
+    "data": {
+      "audio": "/data/upload/42/task_04_lecture_qa.wav",
+      "duration_seconds": 120,
+      "collector_id": "member_b",
+      "speaker_id": "spk_04",
+      "topic": "Class Presentation"
+    },
+    "annotations": [
+      {
+        "id": 402,
+        "completed_by": 102,
+        "was_cancelled": false,
+        "created_at": "2026-10-14T11:30:00.000Z",
+        "updated_at": "2026-10-14T12:00:00.000Z",
+        "lead_time": 55.0,
+        "result": [
+          {
+            "from_name": "transcript",
+            "to_name": "audio",
+            "type": "textarea",
+            "value": {
+              "text": [
+                "Project ហ្នឹង deadline ថ្ងៃអាទិត្យ ត្រូវ prepare slides ឲ្យហើយមុន meeting."
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-14T08:15:00.000Z",
+    "updated_at": "2026-10-14T12:00:00.000Z"
+  }
+]

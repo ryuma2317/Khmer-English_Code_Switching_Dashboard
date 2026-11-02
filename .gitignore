@@ -1,0 +1,82 @@
+# ==============================================================================
+# Coursework Documents & Presentations (Ignored to avoid accidental commits)
+# ==============================================================================
+# Specific project management & client review documents
+Client_Review_Tasks_1_3.pdf
+Khmer-English Speech Dataset Dashboard (CS-01 to CS-03).pptx
+Khmer_English_Code_Switching_Detailed_Backlog.xlsx
+Khmer_English_Dataset_Dashboard_Team_Brief.pdf
+
+# General office & document file types
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+*.csv
+*.tsv
+
+# Microsoft Office temporary / lock files
+~$*
+.~lock.*
+
+# ==============================================================================
+# Audio & Dataset Files (Label Studio exports & raw speech data)
+# ==============================================================================
+*.wav
+*.mp3
+*.m4a
+*.ogg
+*.flac
+synthetic_edge_cases.json
+!fixtures/synthetic_edge_cases.json
+*export*.json
+exports/
+datasets/
+data/
+
+# ==============================================================================
+# Environment & Local Configuration
+# ==============================================================================
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# ==============================================================================
+# Dependencies & Build Artifacts (Node / Python / General)
+# ==============================================================================
+node_modules/
+.test-build/
+.tmp/
+.next/
+.next-dev/
+next-env.d.ts
+*.tsbuildinfo
+dist/
+build/
+coverage/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# ==============================================================================
+# OS & IDE Files
+# ==============================================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.user
+*.useroscan
+
+# Local future-work archive, supplied source and generated review evidence
+later_sprints_archive/
+speech_annotation-main.zip
+sprint1_work/evidence/
