@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "project": 900,
+    "data": {
+      "audio": "/data/upload/900/synthetic_0001.wav",
+      "duration_seconds": 30
+      "collector_id": "member_a"
+    },
+    "annotations": []
+  }
+]

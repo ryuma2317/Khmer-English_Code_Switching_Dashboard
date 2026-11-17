@@ -1,0 +1,9 @@
+[
+  { "id": "101", "project": 900, "data": { "audio": "/data/upload/900/synthetic_0101.wav", "duration_seconds": 30, "collector_id": "member_a" } },
+  { "id": -1, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0102.wav", "duration_seconds": 30, "collector_id": "member_a" } },
+  { "id": 1.5, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0103.wav", "duration_seconds": 30, "collector_id": "member_a" } },
+  { "id": true, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0104.wav", "duration_seconds": 30, "collector_id": "member_a" } },
+  { "id": null, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0105.wav", "duration_seconds": 30, "collector_id": "member_a" } },
+  { "id": 9007199254740992, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0106.wav", "duration_seconds": 30, "collector_id": "member_a" } },
+  { "id": 107, "project": "900", "data": { "audio": "/data/upload/900/synthetic_0107.wav", "duration_seconds": 30, "collector_id": "member_a" } }
+]
