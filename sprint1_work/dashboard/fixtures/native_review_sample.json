@@ -1,0 +1,174 @@
+[
+  {
+    "job": {
+      "id": "synthetic-approved-known",
+      "project_id": "synthetic-native",
+      "annotation_status": "approved",
+      "annotator_user_id": "assigned-alias",
+      "metadata": {
+        "domain": "Synthetic education",
+        "collector_id": "member_a"
+      },
+      "annotation_audit": [
+        {
+          "to_status": "submitted",
+          "actor_id": "member_a",
+          "timestamp": "2026-11-18T00:00:00Z"
+        }
+      ]
+    },
+    "task": {
+      "data": {
+        "audio_duration": 30,
+        "audio_url": "synthetic-audio.wav",
+        "asr_config": {
+          "code_switching": true,
+          "languages": [
+            "km",
+            "en"
+          ]
+        }
+      }
+    },
+    "annotation": {
+      "segments": [
+        {
+          "start": 0,
+          "end": 5,
+          "text": "Khmer English synthetic example",
+          "language": "en",
+          "speaker": "speaker-a"
+        }
+      ]
+    }
+  },
+  {
+    "job": {
+      "id": "synthetic-approved-unknown",
+      "project_id": "synthetic-native",
+      "annotation_status": "approved",
+      "annotator_user_id": "assigned-alias",
+      "metadata": {
+        "domain": "Synthetic education",
+        "collector_id": "member_a"
+      },
+      "annotation_audit": [
+        {
+          "to_status": "submitted",
+          "actor_id": "member_a",
+          "timestamp": "2026-11-18T00:00:00Z"
+        }
+      ]
+    },
+    "task": {
+      "data": {
+        "audio_duration": null,
+        "audio_url": "synthetic-audio.wav",
+        "asr_config": {
+          "code_switching": true,
+          "languages": [
+            "km",
+            "en"
+          ]
+        }
+      }
+    },
+    "annotation": {
+      "segments": [
+        {
+          "start": 0,
+          "end": 5,
+          "text": "Khmer English synthetic example",
+          "language": "en",
+          "speaker": "speaker-a"
+        }
+      ]
+    }
+  },
+  {
+    "job": {
+      "id": "synthetic-submitted",
+      "project_id": "synthetic-native",
+      "annotation_status": "submitted",
+      "annotator_user_id": "assigned-alias",
+      "metadata": {
+        "domain": "Synthetic education",
+        "collector_id": "member_a"
+      },
+      "annotation_audit": [
+        {
+          "to_status": "submitted",
+          "actor_id": "member_a",
+          "timestamp": "2026-11-18T00:00:00Z"
+        }
+      ]
+    },
+    "task": {
+      "data": {
+        "audio_duration": 60,
+        "audio_url": "synthetic-audio.wav",
+        "asr_config": {
+          "code_switching": true,
+          "languages": [
+            "km",
+            "en"
+          ]
+        }
+      }
+    },
+    "annotation": {
+      "segments": [
+        {
+          "start": 0,
+          "end": 5,
+          "text": "Khmer English synthetic example",
+          "language": "en",
+          "speaker": "speaker-a"
+        }
+      ]
+    }
+  },
+  {
+    "job": {
+      "id": "synthetic-draft",
+      "project_id": "synthetic-native",
+      "annotation_status": "draft",
+      "annotator_user_id": "assigned-alias",
+      "metadata": {
+        "domain": "Synthetic education",
+        "collector_id": "member_a"
+      },
+      "annotation_audit": [
+        {
+          "to_status": "submitted",
+          "actor_id": "member_a",
+          "timestamp": "2026-11-18T00:00:00Z"
+        }
+      ]
+    },
+    "task": {
+      "data": {
+        "audio_duration": 45,
+        "audio_url": "synthetic-audio.wav",
+        "asr_config": {
+          "code_switching": true,
+          "languages": [
+            "km",
+            "en"
+          ]
+        }
+      }
+    },
+    "annotation": {
+      "segments": [
+        {
+          "start": 0,
+          "end": 5,
+          "text": "Khmer English synthetic example",
+          "language": "en",
+          "speaker": "speaker-a"
+        }
+      ]
+    }
+  }
+]

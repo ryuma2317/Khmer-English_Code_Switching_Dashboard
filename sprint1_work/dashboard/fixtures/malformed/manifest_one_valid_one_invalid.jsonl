@@ -1,0 +1,2 @@
+{"recording_id": "rec-synth-0021", "audio_filepath": "audio/rec-synth-0021.wav", "domain": "education", "speaker_gender": "female", "annotations": [{"start": 0.0, "end": 2.0, "text": "សួស្តី hello"}]}
+{"recording_id": 22, "audio_filepath": "audio/rec-synth-0022.wav", "domain": "education", "speaker_gender": "male", "annotations": [{"start": 0.0, "end": 1.5, "text": "ថ្ងៃនេះ we have a quiz"}]}

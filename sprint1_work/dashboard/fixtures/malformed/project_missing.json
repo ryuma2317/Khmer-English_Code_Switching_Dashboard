@@ -1,0 +1,4 @@
+[
+  { "id": 11, "data": { "audio": "/data/upload/unknown/synthetic_0011.wav", "duration_seconds": 30, "collector_id": "member_a" }, "created_at": "2026-10-01T08:00:00Z", "updated_at": "2026-10-01T08:00:00Z" },
+  { "id": 12, "data": { "audio": "/data/upload/unknown/synthetic_0012.wav", "duration_seconds": 45, "collector_id": "member_b" }, "created_at": "2026-10-01T08:05:00Z", "updated_at": "2026-10-01T08:05:00Z" }
+]

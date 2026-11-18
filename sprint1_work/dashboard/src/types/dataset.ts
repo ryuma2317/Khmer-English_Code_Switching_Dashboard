@@ -204,6 +204,27 @@ export type ValidationResult<T> =
   | { success: true; data: T; issues: [] }
   | { success: false; issues: ValidationIssue[] };
 
+// --- Persistence & Save Feedback (PM-61) ---
+
+export interface SaveFeedback {
+  status: 'idle' | 'saving' | 'saved' | 'error';
+  message: string | null;
+  lastSavedAt: string | null;
+}
+
+// --- Import Preview & Reconciliation (PM-56) ---
+
+export interface ReconciliationSummary {
+  incomingTotal: number;
+  acceptedCount: number;
+  rejectedCount: number;
+  newCount: number;
+  updatedCount: number;
+  unchangedCount: number;
+  missingDurationCount: number;
+  knownDurationSeconds: number;
+}
+
 // --- Summary & Overview Metrics ---
 
 export interface DatasetMetrics {

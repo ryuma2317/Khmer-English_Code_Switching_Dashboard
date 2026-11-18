@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "project": 900,
+    "data": {
+      "audio": "/data/upload/900/synthetic_0001.wav",
+      "duration_seconds": 30,
+      "collector_id": "member_a"
+    },
+    "annotations": [],
+    "created_at": "2026-10-01T08:00:00Z",
+    "updated_at": "2026-10-01T08:00:00Z"
+  },
+  {
+    "id": 2,
+    "project": 900,
+    "data": {
+      "audio": "/data/upload/900/synth

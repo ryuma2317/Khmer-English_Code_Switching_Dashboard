@@ -1,0 +1,9 @@
+{
+  "job_id": "job-synth-0014",
+  "filename": "synthetic_0014.wav",
+  "template_id": "tmpl-synth",
+  "modules": [{ "id": "transcription", "enabled": true }],
+  "annotation": {
+    "segments": []
+  }
+}
