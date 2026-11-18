@@ -1,0 +1,5 @@
+{"recording_id": "rec-synth-0001", "audio_filepath": "audio/rec-synth-0001.wav", "domain": "education", "speaker_gender": "female", "annotations": [{"start": 0.0, "end": 2.0, "text": "សួស្តី hello"}]}
+{"recording_id": "rec-synth-0002", "audio_filepath": "audio/rec-synth-0002.wav", "domain": "education", "speaker_gender": "male", "annotations": [{"start": 0.0, "end": 1.5, "text": "ថ្ងៃនេះ we have a quiz"}]}
+{"recording_id": "rec-synth-0003", "audio_filepath": "audio/rec-synth-0003.wav", "domain": "daily_life", "speaker_gender": "female", "annotations": [{"start": 0.0, "end": 2.2, "text": "ញ៉ាំ lunch ហើយឬនៅ"}]
+{"recording_id": "rec-synth-0004", "audio_filepath": "audio/rec-synth-0004.wav", "domain": "daily_life", "speaker_gender": "male", "annotations": [{"start": 0.0, "end": 1.8, "text": "see you នៅ class"}]}
+{"recording_id": "rec-synth-0005", "audio_filepath": "audio/rec-synth-0005.wav", "domain": "education", "speaker_gender": "female", "annotations": [{"start": 0.0, "end": 2.4, "text": "homework នេះ difficult ណាស់"}]}

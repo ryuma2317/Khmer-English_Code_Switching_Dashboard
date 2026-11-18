@@ -1,0 +1,12 @@
+{
+  "job_id": "job-synth-0002",
+  "filename": "synthetic_0002.wav",
+  "template_id": "tmpl-synth",
+  "modules": [{ "id": "transcription", "enabled": true }],
+  "annotation": {
+    "segments": [
+      { "id": "seg-1", "start": 0.0, "end": 3.0, "text": "សួស្តី hello everyone", "speaker": "spk_a", "language": "km-en" },
+      { "id": "seg-2", "start": 2.0, "end": 4.5, "text": "ថ្ងៃនេះ we have a quiz", "speaker": "spk_a", "language": "km-en" }
+    ]
+  }
+}

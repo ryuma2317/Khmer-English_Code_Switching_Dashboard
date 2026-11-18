@@ -1,0 +1,12 @@
+[
+  { "id": 21, "project": 900, "data": [] },
+  { "id": 22, "project": 900, "data": null },
+  { "id": 23, "project": 900 },
+  { "id": 24, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0024.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": {} },
+  { "id": 25, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0025.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": null },
+  { "id": 26, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0026.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": [null] },
+  { "id": 27, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0027.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": [{ "id": 2701, "completed_by": "annotator_a", "was_cancelled": false, "result": null }] },
+  { "id": 28, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0028.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": [{ "id": 2801, "completed_by": "annotator_a", "was_cancelled": false, "result": {} }] },
+  { "id": 29, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0029.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": [{ "id": 2901, "completed_by": "annotator_a", "was_cancelled": false, "result": [{ "from_name": "transcript", "to_name": "audio", "type": "textarea", "value": { "text": ["សួស្តី hello", 5] } }] }] },
+  { "id": 30, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0030.wav", "duration_seconds": 30, "collector_id": "member_a" }, "annotations": [{ "id": 3001, "completed_by": "annotator_a", "was_cancelled": false, "result": [{ "from_name": "transcript", "to_name": "audio", "type": "textarea", "value": null }] }] }
+]

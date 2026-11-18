@@ -1,0 +1,3 @@
+id,project,audio,duration_seconds,collector_id
+1,900,/data/upload/900/synthetic_0001.wav,30,member_a
+2,900,/data/upload/900/synthetic_0002.wav,45,member_b

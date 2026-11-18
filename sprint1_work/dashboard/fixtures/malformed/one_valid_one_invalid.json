@@ -1,0 +1,4 @@
+[
+  { "id": 41, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0041.wav", "duration_seconds": 30, "collector_id": "member_a", "speaker_id": "spk_a", "topic": "Synthetic small talk" }, "annotations": [], "created_at": "2026-10-01T08:00:00Z", "updated_at": "2026-10-01T08:00:00Z" },
+  { "id": 42, "project": 900, "data": { "audio": "/data/upload/900/synthetic_0042.wav", "duration_seconds": -5, "collector_id": "member_b", "speaker_id": "spk_b", "topic": "Synthetic small talk" }, "annotations": [], "created_at": "2026-10-01T08:05:00Z", "updated_at": "2026-10-01T08:05:00Z" }
+]
