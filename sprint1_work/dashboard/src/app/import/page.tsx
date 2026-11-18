@@ -1,318 +1,65 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { useDataset } from '../../context/DatasetContext';
-import {
-  Upload,
-  FileCheck,
-  AlertCircle,
-  Clock,
-  Check,
-  X,
-  FileText,
-  RotateCcw,
-  Sparkles,
-  Database
-} from 'lucide-react';
+import { useState, type ChangeEvent } from 'react';
+import { FileJson, UploadCloud, ArrowRight, CheckCircle2, History } from 'lucide-react';
+import { useWorkspace } from '../../context/WorkspaceContext';
+import { applyPreview, MAX_FILE_BYTES, previewImport, type Coverage, type ImportOptions, type Preview, type Source } from '../../lib/workspace';
+import { Badge, PageHeading, Stat, Tip } from '../../components/UI';
 
+const initial: ImportOptions = { filename: '', projectId: '', projectName: '', coverage: 'unknown', source: 'speech-platform' };
 export default function ImportPage() {
-  const {
-    tasks,
-    stagedImport,
-    stageImport,
-    confirmImport,
-    cancelImport,
-    loadSyntheticSample,
-    clearData
-  } = useDataset();
-
-  const [dragActive, setDragActive] = useState(false);
-  const [importSuccessMessage, setImportSuccessMessage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFile = (file: File) => {
-    setImportSuccessMessage(null);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target?.result as string;
-      if (content) {
-        stageImport(content, file.name);
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleConfirm = () => {
-    if (!stagedImport) return;
-    const count = stagedImport.candidateTasks.length;
-    confirmImport();
-    setImportSuccessMessage(`Successfully committed ${count} records to your dataset workspace!`);
-  };
-
-  const handleCancel = () => {
-    cancelImport();
-    setImportSuccessMessage('Import cancelled. Previous workspace was preserved with zero changes.');
-  };
-
-  const handleLoadSample = async () => {
-    setImportSuccessMessage(null);
-    await loadSyntheticSample();
-  };
-
-  return (
-    <div className="max-w-5xl mx-auto py-8 px-4 sm:px-6 space-y-8">
-      {/* Page Header */}
-      <div>
-        <div className="foundation-eyebrow text-xs font-semibold text-indigo-600 tracking-wider uppercase">
-          Sprint 2 / Data Ingestion
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
-          Import & Preview Reconciliation
-        </h1>
-        <p className="text-slate-600 text-sm mt-1">
-          Upload Label Studio JSON or Speech Annotation Platform export files. Inspect validation,
-          reconcile new vs existing tasks, and confirm before saving.
-        </p>
-      </div>
-
-      {/* Success / Status Banner */}
-      {importSuccessMessage && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center justify-between text-emerald-800 text-sm">
-          <div className="flex items-center gap-2">
-            <Check size={18} className="text-emerald-600" />
-            <span>{importSuccessMessage}</span>
-          </div>
-          <button
-            onClick={() => setImportSuccessMessage(null)}
-            className="text-emerald-600 hover:text-emerald-800 text-xs font-medium"
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
-
-      {/* Upload Zone (Visible when no staged preview is pending) */}
-      {!stagedImport && (
-        <div className="space-y-4">
-          <div
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-xl p-8 sm:p-12 text-center transition-colors cursor-pointer ${
-              dragActive
-                ? 'border-indigo-600 bg-indigo-50/50'
-                : 'border-slate-300 hover:border-slate-400 bg-white'
-            }`}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".json,.jsonl"
-              className="hidden"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-            />
-            <div className="mx-auto w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 mb-3">
-              <Upload size={24} />
-            </div>
-            <h3 className="text-base font-semibold text-slate-800">
-              Select or drop an export file
-            </h3>
-            <p className="text-xs text-slate-500 mt-1">
-              Supports Label Studio JSON and Speech Annotation Platform JSON/JSONL
-            </p>
-            <p className="text-xs text-indigo-600 font-medium mt-3">
-              Click to browse your files
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-            <button
-              onClick={handleLoadSample}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-sm font-medium transition-colors border border-indigo-200"
-            >
-              <Sparkles size={16} />
-              Load Synthetic Sample for Preview
-            </button>
-
-            {tasks.length > 0 && (
-              <div className="flex items-center gap-4 text-xs text-slate-500">
-                <span>
-                  Current Workspace: <strong>{tasks.length}</strong> active task records
-                </span>
-                <button
-                  onClick={clearData}
-                  className="inline-flex items-center gap-1 text-rose-600 hover:text-rose-700 font-medium"
-                >
-                  <RotateCcw size={13} />
-                  Reset Workspace
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Staged Preview & Reconciliation Card (PM-56) */}
-      {stagedImport && (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden space-y-6 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-5">
-            <div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 mb-2">
-                <Clock size={13} />
-                Preview Mode — Pending Confirmation
-              </span>
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <FileCheck size={22} className="text-indigo-600" />
-                Reconciliation for: {stagedImport.report.filename}
-              </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Review proposed additions and field values before committing to local storage.
-              </p>
-            </div>
-
-            {/* Explicit Confirm / Cancel Buttons */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleCancel}
-                className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium transition-colors"
-              >
-                <X size={16} />
-                Cancel & Discard
-              </button>
-              <button
-                onClick={handleConfirm}
-                className="inline-flex items-center gap-1.5 px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-xs"
-              >
-                <Check size={16} />
-                Confirm & Save Import
-              </button>
-            </div>
-          </div>
-
-          {/* Reconciliation Metric Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
-              <span className="text-xs font-medium text-slate-500">Incoming Tasks</span>
-              <p className="text-2xl font-bold text-slate-800 mt-1">
-                {stagedImport.reconciliation.incomingTotal}
-              </p>
-              <span className="text-[11px] text-slate-400">Total in file</span>
-            </div>
-
-            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-              <span className="text-xs font-medium text-emerald-700">New Additions</span>
-              <p className="text-2xl font-bold text-emerald-800 mt-1">
-                +{stagedImport.reconciliation.newCount}
-              </p>
-              <span className="text-[11px] text-emerald-600">Unique new records</span>
-            </div>
-
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <span className="text-xs font-medium text-blue-700">Updates / Overwrites</span>
-              <p className="text-2xl font-bold text-blue-800 mt-1">
-                {stagedImport.reconciliation.updatedCount}
-              </p>
-              <span className="text-[11px] text-blue-600">Existing keys updated</span>
-            </div>
-
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-              <span className="text-xs font-medium text-amber-700">Duration Unknown</span>
-              <p className="text-2xl font-bold text-amber-800 mt-1">
-                {stagedImport.reconciliation.missingDurationCount}
-              </p>
-              <span className="text-[11px] text-amber-600">Missing audio_duration</span>
-            </div>
-          </div>
-
-          {/* Warnings & Validation Issues (if any) */}
-          {stagedImport.report.issues.length > 0 && (
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 space-y-1">
-              <p className="font-semibold flex items-center gap-1.5 text-amber-800">
-                <AlertCircle size={15} />
-                Validation Warnings & Notes ({stagedImport.report.issues.length})
-              </p>
-              <ul className="list-disc list-inside space-y-0.5 text-amber-700 max-h-28 overflow-y-auto pl-1">
-                {stagedImport.report.issues.map((issue, idx) => (
-                  <li key={idx}>{issue}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Staged Rows Sample Table */}
-          <div className="border border-slate-200 rounded-lg overflow-hidden">
-            <div className="bg-slate-50 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600">
-              <span className="font-semibold">Candidate Records Preview (First 10)</span>
-              <span>Showing {Math.min(10, stagedImport.candidateTasks.length)} of {stagedImport.candidateTasks.length}</span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-slate-200 text-xs">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Task ID</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Audio Ref</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Duration</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Collector</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Topic</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Annotations</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-slate-100">
-                  {stagedImport.candidateTasks.slice(0, 10).map((t) => (
-                    <tr key={`${t.project_id}_${t.task_id}`} className="hover:bg-slate-50/50">
-                      <td className="px-4 py-2.5 font-mono text-slate-800 font-medium">#{t.task_id}</td>
-                      <td className="px-4 py-2.5 text-slate-600 truncate max-w-xs">{t.audio_ref}</td>
-                      <td className="px-4 py-2.5">
-                        {t.duration_seconds !== null && t.duration_seconds !== undefined ? (
-                          <span className="font-mono text-slate-700">{t.duration_seconds}s</span>
-                        ) : (
-                          <span className="text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded text-[11px]">
-                            Unknown
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-2.5 text-slate-600">{t.collector_source_id || '—'}</td>
-                      <td className="px-4 py-2.5 text-slate-600">{t.topic || '—'}</td>
-                      <td className="px-4 py-2.5">
-                        <span
-                          className={`inline-block px-1.5 py-0.5 rounded text-[11px] font-medium ${
-                            t.is_annotated
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : 'bg-slate-100 text-slate-600'
-                          }`}
-                        >
-                          {t.is_annotated ? 'Annotated' : 'Unannotated'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  const { data, commit, saving, ready } = useWorkspace();
+  const [options, setOptions] = useState(initial);
+  const [content, setContent] = useState('');
+  const [preview, setPreview] = useState<Preview | null>(null);
+  const [error, setError] = useState('');
+  const [checking, setChecking] = useState(false);
+  const [acknowledged, setAcknowledged] = useState(false);
+  const change = (patch: Partial<ImportOptions>) => { setOptions(current => ({ ...current, ...patch })); setPreview(null); setAcknowledged(false); setError(''); };
+  async function prepare(text = content, opts = options) {
+    setChecking(true); setAcknowledged(false); setError('');
+    try {
+      const checksum = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))).map(byte => byte.toString(16).padStart(2, '0')).join('');
+      const next = previewImport(text, { ...opts, checksum }, data);
+      setPreview(next);
+    } catch (failure) { setError(failure instanceof Error ? failure.message : 'This file could not be previewed.'); }
+    finally { setChecking(false); }
+  }
+  async function receive(file?: File) {
+    if (!file) return;
+    setPreview(null); setAcknowledged(false); setError('');
+    if (!/\.(json|jsonl)$/i.test(file.name)) { setError('Choose a .json or .jsonl file.'); setContent(''); return; }
+    if (file.size > MAX_FILE_BYTES) { setError('File exceeds the 20 MB local import limit.'); setContent(''); return; }
+    try { const text = await file.text(); setContent(text); setOptions(current => ({ ...current, filename: file.name })); }
+    catch { setError('The selected file could not be read.'); }
+  }
+  async function sample(native = false) {
+    setChecking(true); setAcknowledged(false); setError('');
+    try {
+      const response = await fetch(native ? '/api/demo/native' : '/api/demo');
+      if (!response.ok) throw new Error('The bundled example could not be loaded.');
+      const text = await response.text();
+      const next = native ? { filename: 'native_review_sample.json', projectId: '', projectName: 'Synthetic native review', coverage: 'complete' as Coverage, source: 'speech-platform' as Source } : { filename: 'synthetic_edge_cases.json', projectId: '42', projectName: 'Synthetic compatibility demonstration', coverage: 'unknown' as Coverage, source: 'label-studio' as Source };
+      setOptions(next); setContent(text); await prepare(text, next);
+    } catch (failure) { setError(failure instanceof Error ? failure.message : 'Example unavailable.'); }
+    finally { setChecking(false); }
+  }
+  async function confirm() {
+    if (!preview?.ok || (preview.batch.rejected > 0 && !acknowledged)) return;
+    const ok = await commit(current => {
+      const fresh = previewImport(content, { ...options, checksum: preview.batch.checksum }, current);
+      return applyPreview(current, { ...fresh, batch: { ...fresh.batch, id: preview.batch.id, at: preview.batch.at } });
+    }, 'Snapshot imported. Open Overview to inspect the updated totals.');
+    if (ok) { setPreview(null); setContent(''); setOptions(current => ({ ...current, filename: '' })); }
+  }
+  const disable = saving || checking || !ready;
+  return <><PageHeading eyebrow="START WITH THE SOURCE" title="Import a snapshot" description="Inspect your export before adding it to the local workspace." action={<div className="actions"><button className="button" onClick={() => void sample(true)} disabled={disable}><FileJson size={16}/>Preview native example</button><button className="button" onClick={() => void sample()} disabled={disable}>Preview compatibility example</button></div>}/>
+    <div className="import-grid"><section className="panel"><div className="step-label">01 <span>Choose the source and context</span></div><div className="form-grid"><label>Source format<select aria-label="Source format" value={options.source} disabled={disable} onChange={event => change({ source: event.target.value as Source })}><option value="speech-platform">Speech Annotation Platform</option><option value="label-studio">Label Studio compatibility</option></select></label><label>Project ID <span className="muted">if not in the file</span><input value={options.projectId} disabled={disable} onChange={event => change({ projectId: event.target.value })} placeholder={options.source === 'label-studio' ? 'Numeric project ID' : 'Native string project ID'}/></label><label>Project display name<input value={options.projectName} maxLength={100} disabled={disable} onChange={event => change({ projectName: event.target.value })} placeholder="Optional descriptive name"/></label><label>Declared source coverage<select aria-label="Declared source coverage" value={options.coverage} disabled={disable} onChange={event => change({ coverage: event.target.value as Coverage })}><option value="unknown">Unknown</option><option value="partial">Partial snapshot</option><option value="complete">Complete snapshot (declared)</option></select></label></div><p className="helper">Native training manifests are always labelled approved-only. A paginated project response is complete only when its page metadata accounts for every task.</p>
+      <div className="dropzone" onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); if (!disable) void receive(event.dataTransfer.files[0]); }}><UploadCloud size={30}/><strong>{options.filename || 'Drop an export here'}</strong><span>JSON or JSONL · up to 20 MB · no audio upload</span><label className="button file-button">Choose file<input aria-label="Choose export file" type="file" accept=".json,.jsonl" disabled={disable} onChange={(event: ChangeEvent<HTMLInputElement>) => { void receive(event.target.files?.[0]); event.target.value = ''; }}/></label></div>
+      <div className="actions"><button className="button primary" onClick={() => void prepare()} disabled={!content || disable}>{checking ? 'Validating…' : 'Preview file'}<ArrowRight size={16}/></button>{content && <button className="button" disabled={disable} onClick={() => { setContent(''); setPreview(null); setAcknowledged(false); setError(''); setOptions(current => ({ ...current, filename: '' })); }}>Cancel without saving</button>}</div>{error && <p role="alert" className="field-error">{error}</p>}</section>
+      <aside className="panel import-explainer"><span className="small-label">A SAFE IMPORT WORKFLOW</span><h2>Preview first.<br/>Save when you’re ready.</h2><p>The preview explains accepted rows, repeated identities, stale updates and missing metadata. Cancelling a preview leaves your saved workspace unchanged.</p><ul className="check-list"><li><CheckCircle2 size={17}/>Each recording counts once</li><li><CheckCircle2 size={17}/>Partial exports retain existing tasks</li><li><CheckCircle2 size={17}/>Unknown duration stays unknown</li><li><CheckCircle2 size={17}/>Collector and annotator stay separate</li></ul><Tip>Native exports may omit duration, project identity or approval evidence. Provide explicit context and keep unavailable fields visible.</Tip></aside></div>
+    {preview && <section className="panel preview-panel" aria-label="Import preview"><div className="section-title"><div><div className="step-label">02 <span>Review the proposed changes</span></div><h2>{options.filename}</h2></div><Badge value={preview.ok ? (preview.batch.rejected ? 'partial' : 'ready') : 'invalid'}/></div><div className="stats-grid compact"><Stat label="Source rows" value={preview.batch.sourceRows} detail={`${preview.batch.duplicates} repeated identities`}/><Stat label="Unique recordings" value={preview.batch.unique} detail={`${preview.batch.rejected} rejected rows`}/><Stat label="Added / updated" value={`${preview.batch.added} / ${preview.batch.updated}`} detail={`${preview.batch.unchanged} unchanged`}/><Stat label="Retained stored evidence" value={preview.batch.stale + preview.batch.conflicts} detail={`${preview.batch.stale} older · ${preview.batch.conflicts} conflicts`}/></div>
+      {preview.errors.map(message => <p role="alert" className="field-error" key={message}>{message}</p>)}<div className="preview-warnings"><strong>{preview.records.filter(record => record.seconds === null).length} unknown durations · {preview.records.filter(record => !record.collector).length} missing collectors</strong><p>These fields remain visible and are never silently estimated.</p></div>{preview.batch.issues.length > 0 && <details open><summary>Inspect {preview.batch.issues.length} source issues</summary><ul className="issue-list">{preview.batch.issues.map((issue, index) => <li key={index}>{issue}</li>)}</ul></details>}<div className="candidate-table"><table><caption>Candidate records and approval evidence</caption><thead><tr><th>Recording ID</th><th>Project</th><th>Duration seconds</th><th>Annotation state</th><th>Counts as approved</th></tr></thead><tbody>{preview.records.slice(0,20).map(record => <tr key={record.key}><td>{record.taskId}</td><td>{record.projectKey}</td><td>{record.seconds ?? 'Unknown'}</td><td>{record.state}</td><td>{record.approved ? 'Yes' : 'No'}</td></tr>)}</tbody></table><p className="helper">Showing up to 20 of {preview.records.length} candidate records. Coverage: {preview.projects.map(p => p.coverage).join(', ') || 'unknown'}. Only approved annotations qualify for the target; unavailable approval stays unknown.</p></div>{preview.batch.rejected > 0 && <label className="acknowledgement"><input type="checkbox" checked={acknowledged} onChange={event => setAcknowledged(event.target.checked)}/>I reviewed the rejected rows and want to import only supported records.</label>}<div className="actions"><button className="button primary" disabled={!preview.ok || disable || (preview.batch.rejected > 0 && !acknowledged)} onClick={() => void confirm()}>Confirm import</button><button className="button" disabled={disable} onClick={() => setPreview(null)}>Cancel preview</button></div></section>}
+    <section className="panel"><div className="section-title"><div><span className="small-label">A RECORD OF EVERY CONFIRMED SNAPSHOT</span><h2><History size={19}/>Import history</h2></div><span className="muted">{data.batches.length} saved batches</span></div>{!data.batches.length ? <p className="muted">Confirmed imports will appear here. Failed previews never replace the latest successful snapshot.</p> : <div className="batch-history">{[...data.batches].reverse().map(batch => <details key={batch.id}><summary><span><strong>{batch.filename}</strong><small>{new Date(batch.at).toLocaleString()}</small></span><span className="muted">{batch.added} added · {batch.updated} updated · {batch.rejected} rejected</span></summary><dl className="detail-grid"><div><dt>Source / unique / duplicates</dt><dd>{batch.sourceRows} / {batch.unique} / {batch.duplicates}</dd></div><div><dt>Unchanged / stale / conflicts</dt><dd>{batch.unchanged} / {batch.stale} / {batch.conflicts}</dd></div></dl><p className="checksum">SHA-256 {batch.checksum || 'not supplied'}</p>{batch.issues.length ? <ul className="issue-list">{batch.issues.map((issue, index) => <li key={index}>{issue}</li>)}</ul> : <p>No source conflicts or rejected rows.</p>}</details>)}</div>}</section>
+  </>;
 }

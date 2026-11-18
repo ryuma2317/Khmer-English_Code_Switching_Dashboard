@@ -1,3 +1,5 @@
+> Integration qualification, 18 November 2026: The following is a member-submitted record. Attendance, meeting dates and client acceptance have not been independently verified. These statements are not acceptance evidence for the current integrated build. PM-52/PM-64 remain subject to actual review evidence. See SPRINT2_INTEGRATION_AND_VERIFICATION.md for checks actually executed.
+
 # Sprint 2 Increment Review & Adaptations Record (PM-64)
 
 * **Parent Task:** [PM-27](https://soksambath2317.atlassian.net/browse/PM-27) (*Sprint 2 Review & Real Data Validation*)
