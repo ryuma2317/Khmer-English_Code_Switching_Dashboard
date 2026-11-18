@@ -19,13 +19,13 @@ import { parseLabelStudioExport } from './parser';
 export interface NativeTaskRecord {
   project_id: string | number | null;
   task_id: string; // Native IDs must remain strings (PM-54 acceptance criteria)
-  audio_ref: string;
+  audio_ref: string | null;
   duration_seconds: number | null; // Strict: null = unknown, never inferred from segment bounds
   collector_source_id: string | null;
   speaker_id: string | null;
   topic: string | null;
-  source_created_at: string;
-  source_updated_at: string;
+  source_created_at: string | null;
+  source_updated_at: string | null;
   last_import_batch_id: string;
 
   is_annotated: boolean;
@@ -111,25 +111,21 @@ export function parseNativeSpeechExport(
   let detectedSubFormat: 'speech_platform_task' | 'speech_platform_manifest' = 'speech_platform_task';
 
   try {
-    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
-      const arr = JSON.parse(trimmed);
-      if (!Array.isArray(arr)) throw new Error('Expected JSON array at root.');
-      parsedRows = arr.map((item, idx) => ({ rowNum: idx + 1, raw: item }));
-    } else if (trimmed.startsWith('{') && trimmed.endsWith('}') && !trimmed.includes('\n')) {
-      parsedRows = [{ rowNum: 1, raw: JSON.parse(trimmed) }];
-    } else {
-      // Treat as JSONL or newline-delimited JSON objects
-      const lines = trimmed.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      parsedRows = lines.map((line, idx) => {
-        try {
-          return { rowNum: idx + 1, raw: JSON.parse(line) };
-        } catch (e) {
-          const errDetail = e instanceof Error ? e.message : 'Invalid JSON';
-          issues.push(`Line ${idx + 1}: Malformed JSON syntax (${errDetail}).`);
-          return { rowNum: idx + 1, raw: null };
+    if (filename.toLowerCase().endsWith('.jsonl')) {
+      detectedSubFormat = 'speech_platform_manifest';
+      parsedRows = rawContent.split(/\r?\n/).flatMap((line, index) => {
+        if (!line.trim()) return [];
+        try { return [{ rowNum: index + 1, raw: JSON.parse(line) as unknown }]; }
+        catch (error) {
+          issues.push(`Line ${index + 1}: Malformed JSON syntax (${error instanceof Error ? error.message : 'Invalid JSON'}).`);
+          return [{ rowNum: index + 1, raw: null }];
         }
       });
-      detectedSubFormat = 'speech_platform_manifest';
+    } else {
+      const parsed: unknown = JSON.parse(trimmed);
+      parsedRows = Array.isArray(parsed)
+        ? parsed.map((raw, index) => ({ rowNum: index + 1, raw }))
+        : [{ rowNum: 1, raw: parsed }];
     }
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : 'Invalid JSON syntax';
@@ -197,20 +193,20 @@ export function parseNativeSpeechExport(
       tasks.push({
         project_id: fallbackProjectId,
         task_id: jobId,
-        audio_ref: data.filename || `recording_${jobId}.wav`,
+        audio_ref: data.filename || null,
         duration_seconds: null,
         collector_source_id: null,
         speaker_id: segments[0]?.speaker || null,
         topic: null,
-        source_created_at: new Date().toISOString(),
-        source_updated_at: new Date().toISOString(),
+        source_created_at: null,
+        source_updated_at: null,
         last_import_batch_id: batchId,
-        is_annotated: transcript !== null,
+        is_annotated: false, // A transcript alone does not prove human approval/completion.
         selected_transcript: transcript,
         annotation_author_id: null,
         has_multiple_annotations: false,
         was_cancelled: false,
-        selected_annotation_id: `${jobId}_ann`,
+        selected_annotation_id: null,
         segments,
         source_format: 'speech_platform_task',
         coverage_status: 'approved-only',
@@ -247,17 +243,17 @@ export function parseNativeSpeechExport(
         audio_ref: data.audio_filepath,
         duration_seconds: null,
         collector_source_id: null,
-        speaker_id: data.speaker_gender || null,
+        speaker_id: null,
         topic: data.domain || null,
-        source_created_at: new Date().toISOString(),
-        source_updated_at: new Date().toISOString(),
+        source_created_at: null,
+        source_updated_at: null,
         last_import_batch_id: batchId,
-        is_annotated: transcript !== null,
+        is_annotated: false, // A transcript alone does not prove human approval/completion.
         selected_transcript: transcript,
         annotation_author_id: null,
         has_multiple_annotations: false,
         was_cancelled: false,
-        selected_annotation_id: `${recId}_ann`,
+        selected_annotation_id: null,
         segments,
         source_format: 'speech_platform_manifest',
         coverage_status: 'approved-only',

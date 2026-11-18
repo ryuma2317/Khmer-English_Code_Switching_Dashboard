@@ -60,6 +60,7 @@ export interface ReconciliationReport {
     knownDurationSeconds: MetricComparison;
     knownDurationHours: MetricComparison;
     missingDurationCount: MetricComparison;
+    completedTasks?: MetricComparison;
   };
   representativeIds: {
     expected: (string | number)[];
@@ -130,7 +131,7 @@ export function auditTaskDurations(tasks: (TaskRecord | NativeTaskRecord)[]): {
 }
 
 /**
- * Simulates reload / persistence round-trip (e.g. JSON storage cycle)
+ * Checks JSON serialization only. Actual IndexedDB reload is verified separately in browser tests.
  * to verify data integrity, strict null duration preservation, and ID stability.
  */
 export function verifyReloadPersistence<T extends TaskRecord | NativeTaskRecord>(
@@ -198,6 +199,8 @@ export function reconcileSampleExport(
   // Parse export through format-isolated adapter
   const { report, tasks } = parseSelectedExport(rawContent, format, filename, fallbackProjectId);
 
+  if (report.status === 'failed') defects.push({ id: 'DEFECT-INVALID-SOURCE', category: 'count', field: 'sourceValidation', expected: 'valid parsed source', actual: report.status, severity: 'blocker', description: 'Source parsing failed; zero expected totals cannot make it a passing reconciliation.' });
+
   // Duration audit
   const durationAudit = auditTaskDurations(tasks);
 
@@ -254,7 +257,8 @@ export function reconcileSampleExport(
     rejectedCount: checkMetric('rejectedCount', benchmark.expectedRejectedRows, report.rejected_count, 'count'),
     knownDurationSeconds: checkMetric('knownDurationSeconds', benchmark.expectedKnownDurationSeconds, durationAudit.totalValidSeconds, 'duration'),
     knownDurationHours: checkMetric('knownDurationHours', benchmark.expectedKnownDurationHours, durationAudit.calculatedHours, 'duration'),
-    missingDurationCount: checkMetric('missingDurationCount', benchmark.expectedMissingDurationCount, durationAudit.missingDurationCount, 'duration')
+    missingDurationCount: checkMetric('missingDurationCount', benchmark.expectedMissingDurationCount, durationAudit.missingDurationCount, 'duration'),
+    ...(benchmark.expectedCompletedTasks === undefined ? {} : { completedTasks: checkMetric('completedTasks', benchmark.expectedCompletedTasks, tasks.filter(task => task.is_annotated).length, 'count') })
   };
 
   // Reload verification
@@ -301,7 +305,7 @@ export function reconcileSampleExport(
  * Pre-configured reference benchmark for synthetic edge cases fixture (PM-14 / PM-15).
  */
 export const SYNTHETIC_EDGE_CASES_BENCHMARK: SampleBenchmarkSpec = {
-  expectedChecksum: '0544e603ca640b426ac6a58ccda81e45362bdb32e91d37c55fd8a0b1916d394c',
+  expectedChecksum: '54d1388665d791ccecf0fe27f2b124bf2a4eebe0e67d2bf2e45c879aed907c53',
   expectedTotalRows: 6,
   expectedUniqueTasks: 5,
   expectedRepeatedRows: 1,

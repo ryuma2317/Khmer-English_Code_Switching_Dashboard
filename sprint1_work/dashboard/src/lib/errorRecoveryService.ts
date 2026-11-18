@@ -56,7 +56,7 @@ export function categorizeValidationIssue(rawMsg: string, defaultRow?: number): 
   const rowMatch = rawMsg.match(/^(?:Row|Line)\s+(\d+)/i);
   if (rowMatch) {
     rowNumber = parseInt(rowMatch[1], 10);
-    location = `Row ${rowNumber}`;
+    location = `${rawMsg.toLowerCase().startsWith('line') ? 'Line' : 'Row'} ${rowNumber}`;
   } else if (rawMsg.toLowerCase().includes('root') || rawMsg.toLowerCase().includes('empty')) {
     location = 'Root';
   }
@@ -118,7 +118,7 @@ export function validateAndPlanImport(
   const trimmed = rawContent.trim();
   let preCheckFailed = false;
 
-  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+  if (!filename.toLowerCase().endsWith('.jsonl')) {
     try {
       const parsed = JSON.parse(trimmed);
       if (selectedFormat === 'label_studio' && !Array.isArray(parsed)) {
@@ -141,9 +141,10 @@ export function validateAndPlanImport(
     }
   } else {
     // Check JSONL lines
-    const lines = trimmed.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const lines = rawContent.split(/\r?\n/);
     let invalidLineCount = 0;
     lines.forEach((line, idx) => {
+      if (!line.trim()) return;
       try {
         JSON.parse(line);
       } catch {
@@ -157,7 +158,7 @@ export function validateAndPlanImport(
       }
     });
 
-    if (invalidLineCount === lines.length) {
+    if (invalidLineCount === lines.filter(line => line.trim()).length) {
       preCheckFailed = true;
     }
   }
@@ -248,8 +249,8 @@ export function safelyResolveWorkspace<T = unknown, C = unknown>(
 
     return {
       updatedTasks: preview.candidate_tasks,
-      wasSaved: true,
-      statusMessage: `Successfully saved ${preview.accepted_count} valid tasks.`
+      wasSaved: false,
+      statusMessage: `Prepared ${preview.accepted_count} valid tasks. Persistence must complete before reporting a save.`
     };
   }
 
